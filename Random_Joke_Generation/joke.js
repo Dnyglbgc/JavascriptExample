@@ -12,16 +12,25 @@ const options={
 
 }
  async function getJoke(){
-    joke.textContent='updating..';
-    jokebutton.textContent='Loading..';
-    jokebutton.disabled=true;
+    try {
+        joke.textContent='updating..';
+        jokebutton.textContent='Loading..';
+        jokebutton.disabled=true;
+    
+       const response= await fetch(apiurl,options);
+       const data= await response.json();
+    
+       jokebutton.disabled=false;
+       jokebutton.textContent='Tell me a joke';
+       joke.textContent=data[0].joke;
+    } catch (error) {
+        
+        joke.textContent='Try again later';
 
-   const response= await fetch(apiurl,options);
-   const data= await response.json();
-
-   jokebutton.disabled=false;
-   jokebutton.textContent='Tell me a joke';
-   joke.textContent=data[0].joke;
+        jokebutton.disabled=false;
+       jokebutton.textContent='Tell me a joke';
+    }
+ 
  }
 
  jokebutton.addEventListener('click',getJoke)
